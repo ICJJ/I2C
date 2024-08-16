@@ -155,7 +155,7 @@ module i2c_tb ();
         clock <= 1'b0;
 
         // Deassert reset
-        #5
+        #50
         reset <= 1'b1;
 
         $display("Beginning write/read tests");
@@ -264,31 +264,15 @@ module i2c_tb ();
         cycle <= cycle + 1;
 
     // Clock generation
-    always #(CLOCKPERIOD / 2) clock <= ~clock;
+initial begin
+    forever begin #(CLOCKPERIOD / 2); clock <= ~clock; end
+end
 
-/*
-  Conditional Environment Settings for the following:
-    - Icarus Verilog
-    - VCS
-    - Altera Modelsim
-    - Xilinx ISIM
-*/
-// Icarus Verilog
-`ifdef IVERILOG
-    initial $dumpfile("vcdbasic.vcd");
-    initial $dumpvars();
-`endif
-
-// VCS
-`ifdef VCS
-    initial $vcdpluson;
-`endif
-
-// Altera Modelsim
-`ifdef MODEL_TECH
-`endif
-
-// Xilinx ISIM
-`ifdef XILINX_ISIM
-`endif
+initial
+begin
+  //fsdb
+  $fsdbDumpfile("testbench.fsdb");
+  $fsdbDumpvars(0,i2c_tb,"+mda");
+  $fsdbDumpMDA();
+end
 endmodule

@@ -36,7 +36,7 @@ module i2c_master
         output reg [8 * DATA_BYTES - 1:0] data_out,   // Data to write to register
         input [8 * DATA_BYTES - 1:0] data_in,         // Data read from register
 
-        output reg [ST_WIDTH - 1:0] status,
+        output reg [ADDR_BYTES + DATA_BYTES:0] status,
         output reg done,
         output reg busy
     );
